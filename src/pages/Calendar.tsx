@@ -9,30 +9,40 @@ import WorkoutCard from '../components/workout/WorkoutCard'
 import 'react-calendar/dist/Calendar.css'
 import '../styles/calendar.css'
 
+type ValuePiece = Date | null
+type Value = ValuePiece | [ValuePiece, ValuePiece]
+
 const CalendarPage = () => {
-  const [date, setDate] = useState(new Date())
+  const [date, setDate] = useState<Value>(new Date())
   const [workouts, setWorkouts] = useState<Workout[]>([])
   const [workoutsOnDate, setWorkoutsOnDate] = useState<Workout[]>([])
 
   useEffect(() => {
     const data = getWorkouts()
     setWorkouts(data)
+    filterWorkoutsForDate(data, date)
+  }, [])
 
-    // Filter workouts for the selected date
-    const selectedDateStr = format(date, 'yyyy-MM-dd')
-    const filtered = data.filter(workout => {
+  useEffect(() => {
+    filterWorkoutsForDate(workouts, date)
+  }, [date, workouts])
+
+  const filterWorkoutsForDate = (workoutsList: Workout[], selectedDate: Value) => {
+    if (!selectedDate) return
+    
+    const selectedDateStr = format(new Date(selectedDate as Date), 'yyyy-MM-dd')
+    const filtered = workoutsList.filter(workout => {
       const workoutDate = new Date(workout.date)
       return format(workoutDate, 'yyyy-MM-dd') === selectedDateStr
     })
 
     setWorkoutsOnDate(filtered)
-  }, [date])
-
-  const handleDateChange = (newDate: Date) => {
-    setDate(newDate)
   }
 
-  // Function to add class to tiles with workouts
+  const handleDateChange = (value: Value) => {
+    setDate(value)
+  }
+
   const tileClassName = ({ date, view }: { date: Date; view: string }) => {
     if (view !== 'month') return null
 
@@ -45,7 +55,7 @@ const CalendarPage = () => {
   }
 
   return (
-    <div>
+    <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-6">Calendário de Treinos</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -68,7 +78,7 @@ const CalendarPage = () => {
         <div>
           <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-card p-4 mb-4">
             <h2 className="text-lg font-semibold mb-2">
-              {format(date, "d 'de' MMMM, yyyy", { locale: ptBR })}
+              {date ? format(new Date(date as Date), "d 'de' MMMM, yyyy", { locale: ptBR }) : 'Selecione uma data'}
             </h2>
 
             {workoutsOnDate.length > 0 ? (
@@ -86,7 +96,7 @@ const CalendarPage = () => {
             {workoutsOnDate.length > 0 ? (
               workoutsOnDate.map(workout => (
                 <Link key={workout.id} to={`/workouts/${workout.id}`}>
-                  <div className="card">
+                  <div className="card hover:shadow-md transition-shadow">
                     <WorkoutCard workout={workout} />
                   </div>
                 </Link>
@@ -96,7 +106,7 @@ const CalendarPage = () => {
                 <p className="text-neutral-600 dark:text-neutral-400 mb-4">
                   Nenhum treino agendado para este dia
                 </p>
-                <Link to="/workouts" className="btn btn-primary">
+                <Link to="/workouts/new" className="btn btn-primary">
                   Adicionar treino
                 </Link>
               </div>
