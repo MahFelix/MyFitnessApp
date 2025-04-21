@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiX, FiCalendar } from 'react-icons/fi'
 import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { ProgressEntry } from '../../types'
 
 interface ProgressEntryFormProps {

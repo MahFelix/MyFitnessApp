@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react'
 import {
   Chart as ChartJS,
@@ -12,7 +13,6 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { getProgressEntries } from '../../utils/storage'
 import { ProgressEntry } from '../../types'
 

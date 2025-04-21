@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { FiPlus, FiMinus, FiEdit, FiCheck, FiTrash2 } from 'react-icons/fi'
-import { Workout, WorkoutExercise, ExerciseSet } from '../../types'
+import { FiPlus, FiMinus, FiCheck, FiTrash2 } from 'react-icons/fi'
+import { Workout, ExerciseSet } from '../../types'
 import { getExercises, saveWorkout } from '../../utils/storage'
-import { generateId, getMuscleGroupLabel, formatWeight } from '../../utils/helpers'
+import { generateId, getMuscleGroupLabel} from '../../utils/helpers'
 
 interface ExerciseListProps {
   workout: Workout
