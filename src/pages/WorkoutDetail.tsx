@@ -71,36 +71,67 @@ const WorkoutDetail = () => {
   }
   
   if (!workout) {
-    return <div className="flex justify-center items-center h-64">Carregando...</div>
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex justify-center items-center h-64"
+      >
+        Carregando...
+      </motion.div>
+    )
   }
   
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="mb-6">
-        <button 
+        <motion.button 
           onClick={handleGoBack}
           className="flex items-center text-neutral-600 dark:text-neutral-400 mb-4"
+          whileHover={{ x: -4 }}
         >
           <FiArrowLeft className="mr-2" />
           Voltar
-        </button>
+        </motion.button>
         
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold">{workout.name}</h1>
-            <p className="text-neutral-600 dark:text-neutral-400">
+            <motion.h1 
+              className="text-2xl font-bold"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 }}
+            >
+              {workout.name}
+            </motion.h1>
+            <motion.p 
+              className="text-neutral-600 dark:text-neutral-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.15 }}
+            >
               {formatDate(workout.date)}
-            </p>
+            </motion.p>
           </div>
           
-          <div className="flex mt-4 sm:mt-0 space-x-2">
-            <button 
+          <motion.div 
+            className="flex mt-4 sm:mt-0 space-x-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <motion.button 
               onClick={handleToggleComplete}
               className={`btn flex items-center ${
                 workout.completed 
                   ? 'bg-success-100 text-success-700 hover:bg-success-200 dark:bg-success-900/20 dark:text-success-400'
                   : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300'
               }`}
+              whileTap={{ scale: 0.95 }}
             >
               {workout.completed ? (
                 <>
@@ -113,44 +144,65 @@ const WorkoutDetail = () => {
                   Incompleto
                 </>
               )}
-            </button>
+            </motion.button>
             
-            <button 
+            <motion.button 
               onClick={handleEdit}
               className="btn btn-secondary flex items-center"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <FiEdit2 className="mr-2" />
               Editar
-            </button>
+            </motion.button>
             
-            <button 
+            <motion.button 
               onClick={handleDelete}
               className="btn bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/20 dark:text-red-400 flex items-center"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <FiTrash2 className="mr-2" />
               Excluir
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
         
         {workout.description && (
-          <div className="bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg mb-6">
+          <motion.div 
+            className="bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg mb-6"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
             <p className="text-neutral-700 dark:text-neutral-300">{workout.description}</p>
-          </div>
+          </motion.div>
         )}
         
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Exercícios</h2>
+          <motion.h2 
+            className="text-xl font-semibold mb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Exercícios
+          </motion.h2>
           <ExerciseList workout={workout} onWorkoutUpdate={setWorkout} />
         </div>
         
         {workout.notes && (
-          <div className="mt-8">
+          <motion.div 
+            className="mt-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+          >
             <h2 className="text-xl font-semibold mb-2">Anotações</h2>
             <div className="bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg">
               <p className="text-neutral-700 dark:text-neutral-300 whitespace-pre-line">{workout.notes}</p>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
       
@@ -169,7 +221,7 @@ const WorkoutDetail = () => {
           workout={workout}
         />
       )}
-    </div>
+    </motion.div>
   )
 }
 
